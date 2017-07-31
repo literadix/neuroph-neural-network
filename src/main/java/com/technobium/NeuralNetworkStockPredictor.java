@@ -99,12 +99,14 @@ public class NeuralNetworkStockPredictor {
 	}
 
 	void trainNetwork() throws IOException {
+
 		NeuralNetwork<BackPropagation> neuralNetwork = new MultiLayerPerceptron(slidingWindowSize,
 				2 * slidingWindowSize + 1, 1);
 
 		int maxIterations = 1000;
 		double learningRate = 0.5;
 		double maxError = 0.00001;
+
 		SupervisedLearning learningRule = neuralNetwork.getLearningRule();
 		learningRule.setMaxError(maxError);
 		learningRule.setLearningRate(learningRate);
@@ -145,14 +147,15 @@ public class NeuralNetworkStockPredictor {
 	}
 
 	void testNetwork() {
+
 		NeuralNetwork neuralNetwork = NeuralNetwork.createFromFile(neuralNetworkModelFilePath);
 		neuralNetwork.setInput(normalizeValue(2056.15), normalizeValue(2061.02), normalizeValue(2086.24),
 				normalizeValue(2067.89), normalizeValue(2059.69));
 
 		neuralNetwork.calculate();
 		double[] networkOutput = neuralNetwork.getOutput();
-		System.out.println("Expected value  : 2066.96");
-		System.out.println("Predicted value : " + deNormalizeValue(networkOutput[0]));
+		System.out.println(String.format("Expected  value  : %.2f", 2066.96));
+        System.out.println(String.format("Predicted value  : %.2f", deNormalizeValue(networkOutput[0])));
 
 	}
 }
